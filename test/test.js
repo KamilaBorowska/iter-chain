@@ -1,15 +1,15 @@
 const assert = require('assert')
-const iterChain = require('../iter-chain')
+const iter = require('../iter-chain')
 
-describe('iterChain', () => {
+describe('iter-chain', () => {
     it('should create iterator identical to original', () => {
-        assert.deepEqual([1, 2, 3], Array.from(iterChain([1, 2, 3])))
+        assert.deepEqual([1, 2, 3], Array.from(iter([1, 2, 3])))
     })
 
     describe('#map', () => {
         it('should map all elements', () => {
             const originalArray = [1, 2, 3]
-            const mapped = iterChain(originalArray).map(x => x * 2)
+            const mapped = iter(originalArray).map(x => x * 2)
             assert.deepEqual(Array.from(mapped), [2, 4, 6])
         })
     })
@@ -17,7 +17,7 @@ describe('iterChain', () => {
     describe('#filter', () => {
         it('should filter elements', () => {
             const originalArray = [1, 2, 3, 4, 5, 6]
-            const filtered = iterChain(originalArray).filter(x => x % 2 !== 0)
+            const filtered = iter(originalArray).filter(x => x % 2 !== 0)
             assert.deepEqual(Array.from(filtered), [1, 3, 5])
         })
     })
@@ -25,7 +25,7 @@ describe('iterChain', () => {
     describe('#sum', () => {
         it('should sum elements', () => {
             const originalArray = [1, 2, 3, 4, 5, 6]
-            assert.deepEqual(iterChain(originalArray).sum(), 1+2+3+4+5+6)
+            assert.deepEqual(iter(originalArray).sum(), 1+2+3+4+5+6)
         })
     })
 
@@ -41,7 +41,7 @@ describe('iterChain', () => {
                     closed = true
                 }
             }
-            for (const value of iterChain(iterator())) {
+            for (const value of iter(iterator())) {
                 break
             }
             assert(closed, "iterator's return method not called")
@@ -54,7 +54,7 @@ describe('iterChain', () => {
                 yield i
             }
         }
-        const summed = iterChain(range(1, 1000))
+        const summed = iter(range(1, 1000))
             .filter(x => x % 2 === 0)
             .map(x => x * 2)
             .sum()
