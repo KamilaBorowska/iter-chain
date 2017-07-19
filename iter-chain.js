@@ -39,6 +39,9 @@ const iteratorBase = {
     peekable() {
         return new Peekable(this)
     },
+    skipWhile(predicate) {
+        return new SkipWhile(this, predicate)
+    },
     return() {
         return this.iterator.return()
     },
@@ -105,6 +108,32 @@ Peekable.prototype.peek = function () {
         this._peekValue = this.iterator.next()
     }
     return this._peekValue
+}
+
+function SkipWhile(iterator, predicate) {
+    this.iterator = iterator
+    this.predicate = predicate
+    this.skipping = true
+}
+SkipWhile.prototype = getBase()
+SkipWhile.prototype.next = function () {
+    if (this.skipping) {
+        const {iterator, predicate} = this
+        // Cannot use for-of syntax, as this implicitly closes
+        // the iterator.
+        while (true) {
+            const {done, value} = iterator.next()
+            if (done) {
+                return {done: true}
+            }
+            if (!predicate(value)) {
+                this.skipping = false
+                return {value, done: false}
+            }
+        }
+    } else {
+        return this.iterator.next()
+    }
 }
 
 function IterChain(iterator) {

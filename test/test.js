@@ -99,6 +99,13 @@ describe('iterChain', () => {
         })
     })
 
+    describe('#skip_while', () => {
+        it('should skip elements until function returns false', () => {
+            let iter = iterChain([-1, 2, 3, -4, 5]).skipWhile(x => x < 0)
+            assert.deepEqual(Array.from(iter), [2, 3, -4, 5])
+        })
+    })
+
     it('should be able to chain multiple functions together', () => {
         function* range(start, end) {
             for (let i = start; i <= end; i++) {
