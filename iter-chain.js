@@ -32,6 +32,10 @@ const iteratorBase = {
             }
         }
     },
+    enumerate() {
+        let index = -1
+        return this.map(value => [++index, value])
+    },
     return() {
         return this.iterator.return()
     },

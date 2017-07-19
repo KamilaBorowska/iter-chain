@@ -74,6 +74,16 @@ describe('iterChain', () => {
         })
     })
 
+    describe('#enumerate', () => {
+        it('should count indexes properly', () => {
+            let iter = iterChain(['a', 'b', 'c']).enumerate()
+            assert.deepEqual(iter.next(), {value: [0, 'a'], done: false})
+            assert.deepEqual(iter.next(), {value: [1, 'b'], done: false})
+            assert.deepEqual(iter.next(), {value: [2, 'c'], done: false})
+            assert.deepEqual(iter.next(), {done: true})
+        })
+    })
+
     it('should be able to chain multiple functions together', () => {
         function* range(start, end) {
             for (let i = start; i <= end; i++) {
