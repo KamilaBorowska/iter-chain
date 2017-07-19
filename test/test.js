@@ -68,9 +68,9 @@ describe('iter-chain', () => {
         })
 
         it('should not close the iterator', () => {
-            let iter = iter([1, 2, 3])
-            assert.strictEqual(iter.nth(0), 1)
-            assert.strictEqual(iter.nth(0), 2)
+            let iterator = iter([1, 2, 3])
+            assert.strictEqual(iterator.nth(0), 1)
+            assert.strictEqual(iterator.nth(0), 2)
         })
     })
 
@@ -83,30 +83,30 @@ describe('iter-chain', () => {
 
     describe('#peekable', () => {
         it('should allow peeking', () => {
-            let iter = iter([1, 2, 3]).peekable()
-            assert.deepEqual(iter.peek(), {value: 1, done: false})
-            assert.deepEqual(iter.peek(), {value: 1, done: false})
-            assert.deepEqual(iter.next(), {value: 1, done: false})
-            assert.deepEqual(iter.next(), {value: 2, done: false})
-            assert.deepEqual(iter.peek(), {value: 3, done: false})
-            assert.deepEqual(iter.next(), {value: 3, done: false})
-            assert.deepEqual(iter.peek(), {value: undefined, done: true})
-            assert.deepEqual(iter.peek(), {value: undefined, done: true})
-            assert.deepEqual(iter.next(), {value: undefined, done: true})
+            let iterator = iter([1, 2, 3]).peekable()
+            assert.deepEqual(iterator.peek(), {value: 1, done: false})
+            assert.deepEqual(iterator.peek(), {value: 1, done: false})
+            assert.deepEqual(iterator.next(), {value: 1, done: false})
+            assert.deepEqual(iterator.next(), {value: 2, done: false})
+            assert.deepEqual(iterator.peek(), {value: 3, done: false})
+            assert.deepEqual(iterator.next(), {value: 3, done: false})
+            assert.deepEqual(iterator.peek(), {value: undefined, done: true})
+            assert.deepEqual(iterator.peek(), {value: undefined, done: true})
+            assert.deepEqual(iterator.next(), {value: undefined, done: true})
         })
     })
 
     describe('#skip_while', () => {
         it('should skip elements until function returns false', () => {
-            let iter = iter([-1, 2, 3, -4, 5]).skipWhile(x => x < 0)
-            assert.deepEqual(Array.from(iter), [2, 3, -4, 5])
+            let iterator = iter([-1, 2, 3, -4, 5]).skipWhile(x => x < 0)
+            assert.deepEqual(Array.from(iterator), [2, 3, -4, 5])
         })
     })
 
     describe('#take_while', () => {
         it('should take elements until function returns false', () => {
-            let iter = iter([-1, -2, 3, 4, -5]).takeWhile(x => x < 0)
-            assert.deepEqual(Array.from(iter), [-1, -2])
+            let iterator = iter([-1, -2, 3, 4, -5]).takeWhile(x => x < 0)
+            assert.deepEqual(Array.from(iterator), [-1, -2])
         })
 
         it('should close iterator', () => {
