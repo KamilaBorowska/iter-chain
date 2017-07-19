@@ -58,6 +58,22 @@ describe('iterChain', () => {
         })
     })
 
+    describe('#nth', () => {
+        it('should pick nth element', () => {
+            assert.strictEqual(iterChain([1, 2, 3]).nth(1), 2)
+        })
+
+        it('should return null when ran out of elements', () => {
+            assert.strictEqual(iterChain([1, 2, 3]).nth(333), null)
+        })
+
+        it('should not close the iterator', () => {
+            let iter = iterChain([1, 2, 3])
+            assert.strictEqual(iter.nth(0), 1)
+            assert.strictEqual(iter.nth(0), 2)
+        })
+    })
+
     it('should be able to chain multiple functions together', () => {
         function* range(start, end) {
             for (let i = start; i <= end; i++) {

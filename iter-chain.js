@@ -19,6 +19,19 @@ const iteratorBase = {
         for (last of this) {}
         return last
     },
+    nth(n) {
+        // Cannot use for-of syntax, as this implicitly closes
+        // the iterator.
+        while (true) {
+            const {done, value} = this.next()
+            if (done) {
+                return null
+            }
+            if (n-- === 0) {
+                return value
+            }
+        }
+    },
     return() {
         return this.iterator.return()
     },
