@@ -50,25 +50,25 @@ describe('iter-chain', () => {
 
     describe('#last', () => {
         it('should pick last element', () => {
-            assert.strictEqual(iterChain([1, 2, 3]).last(), 3)
+            assert.strictEqual(iter([1, 2, 3]).last(), 3)
         })
 
         it('should return null when no elements in iterator', () => {
-            assert.strictEqual(iterChain([]).last(), null)
+            assert.strictEqual(iter([]).last(), null)
         })
     })
 
     describe('#nth', () => {
         it('should pick nth element', () => {
-            assert.strictEqual(iterChain([1, 2, 3]).nth(1), 2)
+            assert.strictEqual(iter([1, 2, 3]).nth(1), 2)
         })
 
         it('should return null when ran out of elements', () => {
-            assert.strictEqual(iterChain([1, 2, 3]).nth(333), null)
+            assert.strictEqual(iter([1, 2, 3]).nth(333), null)
         })
 
         it('should not close the iterator', () => {
-            let iter = iterChain([1, 2, 3])
+            let iter = iter([1, 2, 3])
             assert.strictEqual(iter.nth(0), 1)
             assert.strictEqual(iter.nth(0), 2)
         })
@@ -76,7 +76,7 @@ describe('iter-chain', () => {
 
     describe('#enumerate', () => {
         it('should count indexes properly', () => {
-            let iter = iterChain(['a', 'b', 'c']).enumerate()
+            let iter = iter(['a', 'b', 'c']).enumerate()
             assert.deepEqual(iter.next(), {value: [0, 'a'], done: false})
             assert.deepEqual(iter.next(), {value: [1, 'b'], done: false})
             assert.deepEqual(iter.next(), {value: [2, 'c'], done: false})
@@ -86,7 +86,7 @@ describe('iter-chain', () => {
 
     describe('#peekable', () => {
         it('should allow peeking', () => {
-            let iter = iterChain([1, 2, 3]).peekable()
+            let iter = iter([1, 2, 3]).peekable()
             assert.deepEqual(iter.peek(), {value: 1, done: false})
             assert.deepEqual(iter.peek(), {value: 1, done: false})
             assert.deepEqual(iter.next(), {value: 1, done: false})
@@ -101,14 +101,14 @@ describe('iter-chain', () => {
 
     describe('#skip_while', () => {
         it('should skip elements until function returns false', () => {
-            let iter = iterChain([-1, 2, 3, -4, 5]).skipWhile(x => x < 0)
+            let iter = iter([-1, 2, 3, -4, 5]).skipWhile(x => x < 0)
             assert.deepEqual(Array.from(iter), [2, 3, -4, 5])
         })
     })
 
     describe('#take_while', () => {
         it('should take elements until function returns false', () => {
-            let iter = iterChain([-1, -2, 3, 4, -5]).takeWhile(x => x < 0)
+            let iter = iter([-1, -2, 3, 4, -5]).takeWhile(x => x < 0)
             assert.deepEqual(Array.from(iter), [-1, -2])
         })
 
@@ -123,7 +123,7 @@ describe('iter-chain', () => {
                     closed = true
                 }
             }
-            iterChain(iterator()).takeWhile(_ => false).next()
+            iter(iterator()).takeWhile(_ => false).next()
             assert(closed, "iterator's return method not called")
         })
     })
