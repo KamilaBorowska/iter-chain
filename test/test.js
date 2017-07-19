@@ -106,6 +106,28 @@ describe('iterChain', () => {
         })
     })
 
+    describe('#take_while', () => {
+        it('should take elements until function returns false', () => {
+            let iter = iterChain([-1, -2, 3, 4, -5]).takeWhile(x => x < 0)
+            assert.deepEqual(Array.from(iter), [-1, -2])
+        })
+
+        it('should close iterator', () => {
+            let closed = false
+            function* iterator() {
+                try {
+                    while (true) {
+                        yield 42
+                    }
+                } finally {
+                    closed = true
+                }
+            }
+            iterChain(iterator()).takeWhile(_ => false).next()
+            assert(closed, "iterator's return method not called")
+        })
+    })
+
     it('should be able to chain multiple functions together', () => {
         function* range(start, end) {
             for (let i = start; i <= end; i++) {

@@ -42,6 +42,9 @@ const iteratorBase = {
     skipWhile(predicate) {
         return new SkipWhile(this, predicate)
     },
+    takeWhile(predicate) {
+        return new TakeWhile(this, predicate)
+    },
     return() {
         return this.iterator.return()
     },
@@ -49,6 +52,8 @@ const iteratorBase = {
         return this
     },
 }
+
+const emptyIterator = [][Symbol.iterator]()
 
 function getBase() {
     return Object.create(iteratorBase)
@@ -133,6 +138,24 @@ SkipWhile.prototype.next = function () {
         }
     } else {
         return this.iterator.next()
+    }
+}
+
+
+function TakeWhile(iterator, predicate) {
+    this.iterator = iterator
+    this.predicate = predicate
+}
+TakeWhile.prototype = getBase()
+TakeWhile.prototype.next = function () {
+    const {iterator, predicate} = this
+    const result = iterator.next()
+    if (!result.done && !predicate(result.value)) {
+        iterator.return()
+        this.iterator = emptyIterator
+        return {value: undefined, done: true}
+    } else {
+        return result
     }
 }
 
