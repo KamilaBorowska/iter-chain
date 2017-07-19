@@ -76,11 +76,8 @@ describe('iter-chain', () => {
 
     describe('#enumerate', () => {
         it('should count indexes properly', () => {
-            let iter = iter(['a', 'b', 'c']).enumerate()
-            assert.deepEqual(iter.next(), {value: [0, 'a'], done: false})
-            assert.deepEqual(iter.next(), {value: [1, 'b'], done: false})
-            assert.deepEqual(iter.next(), {value: [2, 'c'], done: false})
-            assert.deepEqual(iter.next(), {done: true})
+            let array = Array.from(iter(['a', 'b', 'c']).enumerate())
+            assert.deepEqual(array, [[0, 'a'], [1, 'b'], [2, 'c']])
         })
     })
 
