@@ -36,6 +36,9 @@ const iteratorBase = {
         let index = -1
         return this.map(value => [++index, value])
     },
+    peekable() {
+        return new Peekable(this)
+    },
     return() {
         return this.iterator.return()
     },
@@ -81,6 +84,27 @@ Filter.prototype.next = function () {
             return {value, done: false}
         }
     }
+}
+
+function Peekable(iterator) {
+    this.iterator = iterator
+    this._peekValue = null
+}
+Peekable.prototype = getBase()
+Peekable.prototype.next = function () {
+    const peekValue = this._peekValue
+    if (peekValue) {
+        this._peekValue = null
+        return peekValue
+    } else {
+        return this.iterator.next()
+    }
+}
+Peekable.prototype.peek = function () {
+    if (!this._peekValue) {
+        this._peekValue = this.iterator.next()
+    }
+    return this._peekValue
 }
 
 function IterChain(iterator) {

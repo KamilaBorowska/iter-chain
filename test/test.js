@@ -84,6 +84,21 @@ describe('iterChain', () => {
         })
     })
 
+    describe('#peekable', () => {
+        it('should allow peeking', () => {
+            let iter = iterChain([1, 2, 3]).peekable()
+            assert.deepEqual(iter.peek(), {value: 1, done: false})
+            assert.deepEqual(iter.peek(), {value: 1, done: false})
+            assert.deepEqual(iter.next(), {value: 1, done: false})
+            assert.deepEqual(iter.next(), {value: 2, done: false})
+            assert.deepEqual(iter.peek(), {value: 3, done: false})
+            assert.deepEqual(iter.next(), {value: 3, done: false})
+            assert.deepEqual(iter.peek(), {value: undefined, done: true})
+            assert.deepEqual(iter.peek(), {value: undefined, done: true})
+            assert.deepEqual(iter.next(), {value: undefined, done: true})
+        })
+    })
+
     it('should be able to chain multiple functions together', () => {
         function* range(start, end) {
             for (let i = start; i <= end; i++) {
