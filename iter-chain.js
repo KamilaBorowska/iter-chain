@@ -68,7 +68,7 @@ Map.prototype.next = function () {
     const {iterator, callback} = this
     const {done, value} = iterator.next()
     if (done) {
-        return {done: true}
+        return {value: undefined, done: true}
     } else {
         return {value: callback(value), done: false}
     }
@@ -86,7 +86,7 @@ Filter.prototype.next = function () {
     while (true) {
         const {done, value} = iterator.next()
         if (done) {
-            return {done: true}
+            return {value: undefined, done: true}
         }
         if (callback(value)) {
             return {value, done: false}
@@ -129,7 +129,7 @@ SkipWhile.prototype.next = function () {
         while (true) {
             const {done, value} = iterator.next()
             if (done) {
-                return {done: true}
+                return {value: undefined, done: true}
             }
             if (!predicate(value)) {
                 this.skipping = false
