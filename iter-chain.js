@@ -14,6 +14,11 @@ const iteratorBase = {
         }
         return sum
     },
+    last() {
+        let last = null
+        for (last of this) {}
+        return last
+    },
     return() {
         return this.iterator.return()
     },

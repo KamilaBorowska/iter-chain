@@ -48,6 +48,16 @@ describe('iterChain', () => {
         })
     })
 
+    describe('#last', () => {
+        it('should pick last element', () => {
+            assert.strictEqual(iterChain([1, 2, 3]).last(), 3)
+        })
+
+        it('should return null when no elements in iterator', () => {
+            assert.strictEqual(iterChain([]).last(), null)
+        })
+    })
+
     it('should be able to chain multiple functions together', () => {
         function* range(start, end) {
             for (let i = start; i <= end; i++) {
