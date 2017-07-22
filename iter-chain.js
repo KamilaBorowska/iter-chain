@@ -96,23 +96,23 @@ Filter.prototype.next = function () {
 
 function Peekable(iterator) {
     this.iterator = iterator
-    this._peekValue = null
+    this.peekValue = null
 }
 Peekable.prototype = getBase()
 Peekable.prototype.next = function () {
-    const peekValue = this._peekValue
+    const peekValue = this.peekValue
     if (peekValue) {
-        this._peekValue = null
+        this.peekValue = null
         return peekValue
     } else {
         return this.iterator.next()
     }
 }
 Peekable.prototype.peek = function () {
-    if (!this._peekValue) {
-        this._peekValue = this.iterator.next()
+    if (!this.peekValue) {
+        this.peekValue = this.iterator.next()
     }
-    return this._peekValue
+    return this.peekValue
 }
 
 function SkipWhile(iterator, predicate) {
