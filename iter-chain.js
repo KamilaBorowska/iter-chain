@@ -16,7 +16,7 @@ const iteratorBase = {
     },
     last() {
         let last = null;
-        for (last of this) {};
+        for (last of this) {}
         return last;
     },
     nth(n) {
@@ -51,7 +51,7 @@ const iteratorBase = {
     [Symbol.iterator]() {
         return this;
     },
-}
+};
 
 const emptyIterator = [][Symbol.iterator]();
 
@@ -63,6 +63,7 @@ function Map(iterator, callback) {
     this.iterator = iterator;
     this.callback = callback;
 }
+
 Map.prototype = getBase();
 Map.prototype.next = function () {
     const {iterator, callback} = this;
@@ -72,12 +73,13 @@ Map.prototype.next = function () {
     } else {
         return {value: callback(value), done: false};
     }
-}
+};
 
 function Filter(iterator, callback) {
     this.iterator = iterator;
     this.callback = callback;
 }
+
 Filter.prototype = getBase();
 Filter.prototype.next = function () {
     const {iterator, callback} = this;
@@ -92,12 +94,13 @@ Filter.prototype.next = function () {
             return {value, done: false};
         }
     }
-}
+};
 
 function Peekable(iterator) {
     this.iterator = iterator;
     this.peekValue = null;
 }
+
 Peekable.prototype = getBase();
 Peekable.prototype.next = function () {
     const peekValue = this.peekValue;
@@ -107,19 +110,21 @@ Peekable.prototype.next = function () {
     } else {
         return this.iterator.next();
     }
-}
+};
+
 Peekable.prototype.peek = function () {
     if (!this.peekValue) {
         this.peekValue = this.iterator.next();
     }
     return this.peekValue;
-}
+};
 
 function SkipWhile(iterator, predicate) {
     this.iterator = iterator;
     this.predicate = predicate;
     this.skipping = true;
 }
+
 SkipWhile.prototype = getBase();
 SkipWhile.prototype.next = function () {
     if (this.skipping) {
@@ -127,7 +132,7 @@ SkipWhile.prototype.next = function () {
         // Cannot use for-of syntax, as this implicitly closes
         // the iterator.
         while (true) {
-            const {done, value} = iterator.next()
+            const {done, value} = iterator.next();
             if (done) {
                 return {value: undefined, done: true};
             }
@@ -139,13 +144,13 @@ SkipWhile.prototype.next = function () {
     } else {
         return this.iterator.next();
     }
-}
-
+};
 
 function TakeWhile(iterator, predicate) {
     this.iterator = iterator;
     this.predicate = predicate;
 }
+
 TakeWhile.prototype = getBase();
 TakeWhile.prototype.next = function () {
     const {iterator, predicate} = this;
@@ -157,20 +162,22 @@ TakeWhile.prototype.next = function () {
     } else {
         return result;
     }
-}
+};
 
 function IterChain(iterator) {
     this.iterator = iterator[Symbol.iterator]();
 }
+
 IterChain.prototype = Object.create(iteratorBase);
 IterChain.prototype.next = function () {
     return this.iterator.next();
-}
+};
+
 IterChain.prototype.return = function () {
     if (this.iterator.return !== undefined) {
         return this.iterator.return();
     }
-}
+};
 
 function iterChain(iterator) {
     return new IterChain(iterator);
